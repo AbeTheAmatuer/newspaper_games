@@ -42,7 +42,7 @@ export default function Home() {
       } catch (e) {
         const res = await fetch("/api/words");
         setMessage("Failed to load dictionary", res);
-        console.log("FAILED" + e);
+        console.log(res + "FAILED" + e);
       }
     }
     load();
