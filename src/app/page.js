@@ -38,10 +38,10 @@ export default function Home() {
         const res = await fetch("/api/words");
         //const data = await res.json();
         //setWords(data.words || []);
-        //setAnswer(data.dailyWord);
+        setAnswer(await res.text().dailyWord);
         console.log("text" + await res.text());
         console.log("status," + res.status);
-        setMessage("no err", res.text().dailyWord)
+        setMessage("no err", answer)
       } catch (e) {
         const res = await fetch("/api/words");
         setMessage("Failed to load dictionarry", res);
