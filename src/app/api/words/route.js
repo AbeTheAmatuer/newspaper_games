@@ -10,7 +10,7 @@ let cachedDailyWord = null;
 
 export async function GET() {
   if (!cachedWords) {
-    const res = await fetch(`${'public'}/words.txt`);
+    const res = await fetch(`https://newspaper-games-3qay1toqu-abetheamatuers-projects.vercel.app/words.txt`);
     const text = await res.text();
 
     const raw = text.split(" ");
