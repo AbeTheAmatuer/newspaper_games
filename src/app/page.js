@@ -39,7 +39,8 @@ export default function Home() {
         //const data = await res.json();
         //setWords(data.words || []);
         //setAnswer(data.dailyWord);
-        console.log("NO ERR" + res)
+        console.log("text" + await res.text());
+        console.log("status," + res.status);
         setMessage("no err", res)
       } catch (e) {
         const res = await fetch("/api/words");
