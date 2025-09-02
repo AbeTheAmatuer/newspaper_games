@@ -41,7 +41,7 @@ export default function Home() {
         setAnswer(data.dailyWord);
       } catch (e) {
         setMessage("Failed to load dictionaryy");
-        console.log(res + "FAILED" + e);
+        console.log("FAILED" + e);
       }
     }
     load();
