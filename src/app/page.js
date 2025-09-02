@@ -36,13 +36,13 @@ export default function Home() {
     async function load() {
       try {
         const res = await fetch("/api/words");
-        const data = await res.json();
-        setWords(res.words || []);
-        setAnswer(res.dailyWord);
-        console.log(data)
+        //const data = await res.json();
+        //setWords(data.words || []);
+        //setAnswer(data.dailyWord);
+        console.log(res)
       } catch (e) {
         const res = await fetch("/api/words");
-        setMessage("Failed to load dictionary", res);
+        setMessage("Failed to load dictionarry", res);
         console.log(res + "FAILED" + e);
       }
     }
