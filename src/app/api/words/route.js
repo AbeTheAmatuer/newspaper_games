@@ -11,7 +11,7 @@ let cachedDailyWord = null;
 export async function GET() {
   let text;
   if (!cachedWords) {
-    text = fs.readFileSync("./src/app/api/words/words.txt", "utf8");
+    text = fs.readFileSync("api/words/words.txt", "utf8");
     const raw = text.split(" ");
     const five = raw.filter((w) => /^[a-zA-Z]{5}$/.test(w));
     leoProfanity.clearList();
