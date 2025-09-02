@@ -36,9 +36,9 @@ export default function Home() {
     async function load() {
       try {
         const res = await fetch("/api/words");
-        const data = await res.json();
-        setWords(data.words || []);
-        setAnswer(data.dailyWord);
+        //const data = await res.json();
+        setWords(res.words || []);
+        setAnswer(res.dailyWord);
         console.log(res)
       } catch (e) {
         const res = await fetch("/api/words");
