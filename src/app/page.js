@@ -41,7 +41,7 @@ export default function Home() {
         //setAnswer(data.dailyWord);
         console.log("text" + await res.text());
         console.log("status," + res.status);
-        setMessage("no err", res)
+        setMessage("no err", res.text().dailyWord)
       } catch (e) {
         const res = await fetch("/api/words");
         setMessage("Failed to load dictionarry", res);
