@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import fs from "node:fs";
 import leoProfanity from "leo-profanity";
-import path from "path";
 import wordListPath from "word-list";
 
 export const runtime = "nodejs";
@@ -11,8 +10,8 @@ let cachedDailyWord = null;
 
 export async function GET() {
   if (!cachedWords) {
-    const filePath = path.join(process.cwd(), "public", "words.txt");
-    const text = fs.readFileSync(filePath, "utf8");
+    const res = await fetch(`${'public'}/words.txt`);
+    const text = await res.text();
 
     const raw = text.split(" ");
     const five = raw.filter((w) => /^[a-zA-Z]{5}$/.test(w));
@@ -23,7 +22,7 @@ export async function GET() {
       .filter((w) => !leoProfanity.check(w.toLowerCase()));
   }
 
-  if (!cachedDailyWord && cachedWords.length) {
+  if (!cachedDailyWord && cachedWords && cachedWords.length) {
     cachedDailyWord =
       cachedWords[Math.floor(Math.random() * cachedWords.length)];
   }
