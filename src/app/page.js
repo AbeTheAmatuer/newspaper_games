@@ -40,8 +40,8 @@ export default function Home() {
         setWords(data.words || []);
         setAnswer(data.dailyWord);
       } catch (e) {
-        setMessage("Failed to load dictionary");
-        console.log("FAILED" + e);
+        setMessage("Failed to load dictionaryy");
+        console.log(res + "FAILED" + e);
       }
     }
     load();
