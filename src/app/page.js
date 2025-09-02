@@ -40,6 +40,7 @@ export default function Home() {
         //setWords(data.words || []);
         //setAnswer(data.dailyWord);
         console.log(res)
+        setMessage("no err", res)
       } catch (e) {
         const res = await fetch("/api/words");
         setMessage("Failed to load dictionarry", res);
