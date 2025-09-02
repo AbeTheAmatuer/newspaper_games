@@ -9,9 +9,10 @@ let cachedWords = null;
 let cachedDailyWord = null;
 
 export async function GET() {
-  let text;
   if (!cachedWords) {
-    text = fs.readFileSync("./src/app/api/words/words.txt", "utf8");
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/words.txt`);
+    const text = await res.text();
+
     const raw = text.split(" ");
     const five = raw.filter((w) => /^[a-zA-Z]{5}$/.test(w));
     leoProfanity.clearList();
@@ -20,10 +21,16 @@ export async function GET() {
       .map((w) => w.toUpperCase())
       .filter((w) => !leoProfanity.check(w.toLowerCase()));
   }
+
   if (!cachedDailyWord && cachedWords && cachedWords.length) {
-    cachedDailyWord = cachedWords[Math.floor(Math.random() * cachedWords.length)];
+    cachedDailyWord =
+      cachedWords[Math.floor(Math.random() * cachedWords.length)];
   }
-  return NextResponse.json({ words: cachedWords, text: text, dailyWord: cachedDailyWord });
+
+  return NextResponse.json({
+    words: cachedWords,
+    dailyWord: cachedDailyWord,
+  });
 }
 
 
