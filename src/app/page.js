@@ -40,7 +40,7 @@ export default function Home() {
         //setWords(data.words || []);
         setMessage("no err", await res.text());
         setAnswer(await message.dailyWord);
-        console.log("res:" + res.text());
+        console.log("res:" + message);
         console.log("status," + res.status);
         
       } catch (e) {
