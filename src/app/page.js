@@ -36,12 +36,13 @@ export default function Home() {
     async function load() {
       try {
         const res = await fetch("/api/words");
-        const data = await res.json();
+        //const data = await res.json();
         //setWords(data.words || []);
-        setMessage("no err", data.dailyWord);
-        setAnswer(await message.dailyWord);
-        console.log("data", data.dailyWord);
-        console.log("status," + res.status);
+        console.log(res);
+        //setMessage("no err", data.dailyWord);
+        //setAnswer(await message.dailyWord);
+        //console.log("data", data.dailyWord);
+        //console.log("status," + res.status);
         
       } catch (e) {
         const res = await fetch("/api/words");
