@@ -13,8 +13,20 @@ let cachedDailyWord = null;
 export async function GET() {
   try {
     if (!cachedWords) {
-      const text = await fs.promises.readFile(wordListPath, "utf8");
-      const raw = text.split(/\r?\n/);
+      let text = "";
+      try {
+        // Primary: local dictionary from word-list package
+        text = await fs.promises.readFile(wordListPath, "utf8");
+      } catch (e) {
+        // Fallback: fetch from public dictionary repo (one-time, then memory-cached)
+        const remoteUrl = "https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt";
+        const resp = await fetch(remoteUrl, { cache: "no-store" });
+        if (!resp.ok) {
+          throw new Error(`Failed remote dict ${resp.status}`);
+        }
+        text = await resp.text();
+      }
+      const raw = text.split(/\r?\n|\s+/);
       const five = raw.filter((w) => /^[a-zA-Z]{5}$/.test(w));
       leoProfanity.clearList();
       leoProfanity.loadDictionary();
