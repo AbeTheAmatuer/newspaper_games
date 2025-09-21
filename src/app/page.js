@@ -35,19 +35,18 @@ export default function Home() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/words");
-        //const data = await res.json();
-        //setWords(data.words || []);
-        console.log(res);
-        //setMessage("no err", data.dailyWord);
-        //setAnswer(await message.dailyWord);
-        //console.log("data", data.dailyWord);
-        //console.log("status," + res.status);
-        
+        const res = await fetch("/api/words", { cache: "no-store" });
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        const data = await res.json();
+        setWords(Array.isArray(data.words) ? data.words : []);
+        setAnswer(typeof data.dailyWord === "string" ? data.dailyWord : "");
+        setMessage("");
+        console.log("Loaded dictionary:", { count: data.words?.length, daily: data.dailyWord });
       } catch (e) {
-        const res = await fetch("/api/words");
-        setMessage("Failed to load dictionarry", res);
-        console.log(res + "FAILED" + e);
+        setMessage("Failed to load dictionary");
+        console.error("Dictionary fetch failed", e);
       }
     }
     load();
@@ -142,15 +141,13 @@ export default function Home() {
 
   const keyRows = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
   function keyColor(letter) { return classFor(keyStatus[letter]); }
-/*
   if (!answer) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
-        <div>Loading dictionary…</div>
+        <div>{message || "Loading dictionary…"}</div>
       </div>
     );
   }
-*/
   return (
     <div className="min-h-screen flex flex-col items-center gap-6 p-6">
       <h1 className="text-3xl font-bold tracking-wider">Wordle</h1>

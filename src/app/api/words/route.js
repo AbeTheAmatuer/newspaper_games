@@ -8,12 +8,10 @@ export const runtime = "nodejs";
 let cachedWords = null;
 let cachedDailyWord = null;
 
-export async function GET() {
+export async function GET(request) {
   if (!cachedWords) {
     //const res = await fetch(`https://newspaper-games-3qay1toqu-abetheamatuers-projects.vercel.app/words.txt`);
     const url = new URL("/words.txt", request.url);
-
-    // 2) Fetch it (avoid caching if you want fresh reads)
     const res = await fetch(url.toString(), { cache: "no-store" });
     const text = await res.text();
 
