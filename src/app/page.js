@@ -118,7 +118,7 @@ export default function Home() {
             flash("You win!");
           } else if (nextGuessesLength === ROWS) {
             setDone(true);
-            flash(`Answer: ${answer}`);
+            displayMessage(`Answer: ${answer}`);
           }
           setAnimating(false);
         }
@@ -126,9 +126,9 @@ export default function Home() {
     }
   }
 
-  function flash(text) {
+  function diplayMessage(text) {
     setMessage(text);
-    setTimeout(() => setMessage(""), 1200);
+    //setTimeout(() => setMessage(""), 1200);
   }
 
   function onKey(e) {
