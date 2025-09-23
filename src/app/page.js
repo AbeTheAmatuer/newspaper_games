@@ -207,6 +207,7 @@ export default function Home() {
         ))}
       </div>
       <div className="h-6 text-sm opacity-80">{message}</div>
+      <div className="h-6 text-sm opacity-100">{answerDisplay}</div>
       <div className="flex flex-col items-center gap-2 select-none">
         {keyRows.map((row, i) => (
           <div key={i} className="flex gap-2">
