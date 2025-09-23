@@ -11,9 +11,23 @@ export const revalidate = 0;
 let cachedWords = null; // allowed guesses (full dictionary)
 let cachedAnswerWords = null; // answer pool (from public/words.txt)
 let cachedDailyWord = null;
+let cachedRandWord = null;
+let mode = "daily";
 
-export async function GET() {
+export async function GET(request) {
   try {
+    // Read mode from query string (?mode=daily|random) and reset cachedDailyWord so it can be recalculated below
+    try {
+      const url = new URL(request.url);
+      const q = (url.searchParams.get("mode") || "").toLowerCase();
+      if (q === "random") {
+        mode = "random";
+        cachedDailyWord = null;
+      } else {
+        mode = "daily";
+        cachedDailyWord = null;
+      }
+    } catch {}
     if (!cachedWords) {
       let text = "";
       try {
@@ -55,14 +69,20 @@ export async function GET() {
       }
     }
 
+
     if (!cachedDailyWord) {
-      const now = new Date();
+      if (mode === "daily") {
+        const now = new Date();
       const dayNumber = Math.floor(
         Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) /
           86400000
       );
       const index = dayNumber % cachedAnswerWords.length;
       cachedDailyWord = cachedAnswerWords[index];
+      }
+      else if (mode === "random") {
+        cachedDailyWord = cachedAnswerWords[Math.floor(Math.random() * cachedAnswerWords.length)];
+      }
     }
 
     return NextResponse.json({

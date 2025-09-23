@@ -31,16 +31,28 @@ export default function Home() {
   const [keyStatus, setKeyStatus] = useState({}); // letter -> best status
   const [evaluations, setEvaluations] = useState([]); // array of arrays of statuses revealed sequentially
   const [animating, setAnimating] = useState(false);
+  const [mode, setMode] = useState("daily");
+
+  function resetGame() {
+    setGuesses([]);
+    setCurrent("");
+    setMessage("");
+    setDone(false);
+    setKeyStatus({});
+    setEvaluations([]);
+    setAnimating(false);
+  }
 
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch("/api/words", { cache: "no-store" });
+        const res = await fetch(`/api/words?mode=${mode}`, { cache: "no-store" });
         if (!res.ok) {
           throw new Error(`HTTP ${res.status}`);
         }
         const data = await res.json();
         setWords(Array.isArray(data.words) ? data.words : []);
+        resetGame();
         setAnswer(typeof data.dailyWord === "string" ? data.dailyWord : "");
         setMessage("");
         console.log("Loaded dictionary:", { count: data.words?.length, daily: data.dailyWord });
@@ -50,7 +62,7 @@ export default function Home() {
       }
     }
     load();
-  }, []);
+  }, [mode]);
 
   function updateKeyStatus(guess, evals) {
     setKeyStatus(prev => {
@@ -144,13 +156,39 @@ export default function Home() {
   if (!answer) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
-        <div>{message || "Loading dictionary…"}</div>
+        <div className="flex flex-col items-center gap-3">
+          <div>{message || "Loading dictionary…"}</div>
+          <div className="flex items-center gap-2 text-sm">
+            <label htmlFor="mode" className="opacity-80">Mode:</label>
+            <select
+              id="mode"
+              value={mode}
+              onChange={(e) => setMode(e.target.value)}
+              className="border rounded px-2 py-1"
+            >
+              <option value="daily">Daily</option>
+              <option value="random">Random</option>
+            </select>
+          </div>
+        </div>
       </div>
     );
   }
   return (
     <div className="min-h-screen flex flex-col items-center gap-6 p-6">
       <h1 className="text-3xl font-bold tracking-wider">Wordle</h1>
+      <div className="flex items-center gap-2">
+        <label htmlFor="mode" className="opacity-80">Mode:</label>
+        <select
+          id="mode"
+          value={mode}
+          onChange={(e) => setMode(e.target.value)}
+          className="border rounded px-2 py-1"
+        >
+          <option value="daily">Daily</option>
+          <option value="random">Random</option>
+        </select>
+      </div>
       
       <div className="grid gap-2" style={{ gridTemplateRows: `repeat(${ROWS}, 1fr)` }}>
         {rows.map((row, i) => (
