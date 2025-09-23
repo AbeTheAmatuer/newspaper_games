@@ -32,6 +32,7 @@ export default function Home() {
   const [evaluations, setEvaluations] = useState([]); // array of arrays of statuses revealed sequentially
   const [animating, setAnimating] = useState(false);
   const [mode, setMode] = useState("daily");
+  const [answerDisplay, setAnswerDisplay] = useState("");
 
   function resetGame() {
     setGuesses([]);
@@ -118,7 +119,7 @@ export default function Home() {
             flash("You win!");
           } else if (nextGuessesLength === ROWS) {
             setDone(true);
-            displayMessage(`Answer: ${answer}`);
+            setAnswerDisplay(`Answer: ${answer}`);
           }
           setAnimating(false);
         }
@@ -126,10 +127,12 @@ export default function Home() {
     }
   }
 
-  function diplayMessage(text) {
+  function flash(text) {
     setMessage(text);
-    //setTimeout(() => setMessage(""), 1200);
+    setTimeout(() => setMessage(""), 1200);
   }
+
+
 
   function onKey(e) {
     const key = e.key.toUpperCase();
